@@ -1,102 +1,54 @@
-# sample-python-app Omnibus project
+# Omnibus and Python
+This repository is an example of how one might go about building a packaging a python app with Omnibus.
 
-This project creates full-stack platform-specific packages for
-`sample-python-app`!
+## What's omnibus?
+Omnibus is a project from Opscode (the Chef folks) that they created to build "full-stack installers" of the Chef toolchain.
 
-## Installation
+The general idea is to build EVERYTHING needed above libc into a single platform-specific package that they could give to customers.
 
-We'll assume you have Ruby 1.9+ and Bundler installed. First ensure all
-required gems are installed and ready to use:
+## Why do I need it?
+Maybe you don't. But if you want to stop fighting distro vendors on what version of Python they ship with, this is the way to go.
 
-```shell
-$ bundle install --binstubs
-```
+## How do I use it?
+This is just a sample project. You'll probably want to use [omnibus](https://github.com/opscode/omnibus-ruby) to create your own project.
+All Omnibus-generated projects come with a Vagrantfile that you can use to spin up a "build lab". Be warned if you blindly do a `vagrant up` in this project (or your generated one), you'll have to wait for:
 
-## Usage
+- Ubuntu 12.04
+- Ubuntu 11.04
+- Ubuntu 10.04
+- CentOS 5
+- CentOS 6
 
-### Build
+to all spin up and build packages. You probably don't want that. Or maybe you do. Hell if I know.
 
-You create a platform-specific package using the `build project` command:
+## You got your ruby in my python
+Yeah sorry about that. Rub some Go in it. It'll be okay.
 
-```shell
-$ bin/omnibus build project sample-python-app
-```
+Seriously though, you need ruby to at least CREATE the project skeleton (or you can hijack this project and make a bunch of changes but that's "painful")
 
-The platform/architecture type of the package created will match the platform
-where the `build project` command is invoked. So running this command on say a
-MacBook Pro will generate a Mac OS X specific package. After the build
-completes packages will be available in `pkg/`.
+The project creation is platform agnostic so if you're on OSX, you should be able to just install the omnibus gem and run:
 
-### Clean
+`omnibus project my-app-name`
 
-You can clean up all temporary files generated during the build process with
-the `clean` command:
+and you'll get skeleton named `omnibus-my-app-name`. From there you can let omnibus do everything in Vagrant (including building Ruby to install the omnibus gem to build your python project).
 
-```shell
-$ bin/omnibus clean
-```
+## Other stuff
+The files you'll probably want to look at for your project are in `config/software`. This is where the "recipes" that define what stuff to install in the final package live. The files correspond to `dependency` lines in `config/project/whatever.rb`. 
 
-Adding the `--purge` purge option removes __ALL__ files generated during the
-build including the project install directory (`/opt/sample-python-app`) and
-the package cache directory (`/var/cache/omnibus/pkg`):
+You might notice that there's no `python` recipe for instance. That's because by default omnibus will head out to [omnibus-software](https://github.com/opscode/omnibus-software) to resolve missing software defintions. If you check that repo, you'll notice [this](https://github.com/opscode/omnibus-software/blob/master/config/software/python.rb) file. This means your fresh hot package will be built with python 2.7.5. 
 
-```shell
-$ bin/omnibus clean --purge
-```
+If you want to change that, you should copy that file into your local software dir and make any changes. You should probably do this anyway because omnibus will always pull from the HEAD of this repo by default. I KNOW RIGHT?
 
-### Help
+## TODO
+I think I want to add a few more common "tools" in here to bundle for a standard python shop:
 
-Full help for the Omnibus command line interface can be accessed with the
-`help` command:
+- supervisor
+- nose
+- ?????
 
-```shell
-$ bin/omnibus help
-```
+If you have ideas, let me know and I'll add em.
 
-## Vagrant-based Virtualized Build Lab
+## I like the cut of your jib.
+Thanks. I work out.
 
-Every Omnibus project ships will a project-specific
-[Berksfile](http://berkshelf.com/) and [Vagrantfile](http://www.vagrantup.com/)
-that will allow you to build your projects on the following platforms:
-
-* CentOS 5 64-bit
-* CentOS 6 64-bit
-* Ubuntu 10.04 64-bit
-* Ubuntu 11.04 64-bit
-* Ubuntu 12.04 64-bit
-
-Please note this build-lab is only meant to get you up and running quickly;
-there's nothing inherent in Omnibus that restricts you to just building CentOS
-or Ubuntu packages. See the Vagrantfile to add new platforms to your build lab.
-
-The only requirements for standing up this virtualized build lab are:
-
-* VirtualBox - native packages exist for most platforms and can be downloaded
-from the [VirtualBox downloads page](https://www.virtualbox.org/wiki/Downloads).
-* Vagrant 1.2.1+ - native packages exist for most platforms and can be downloaded
-from the [Vagrant downloads page](http://downloads.vagrantup.com/).
-
-The [vagrant-berkshelf](https://github.com/RiotGames/vagrant-berkshelf) and
-[vagrant-omnibus](https://github.com/schisamo/vagrant-omnibus) Vagrant plugins
-are also required and can be installed easily with the following commands:
-
-```shell
-$ vagrant plugin install vagrant-berkshelf
-$ vagrant plugin install vagrant-omnibus
-```
-
-Once the pre-requisites are installed you can build your package across all
-platforms with the following command:
-
-```shell
-$ vagrant up
-```
-
-If you would like to build a package for a single platform the command looks like this:
-
-```shell
-$ vagrant up PLATFORM
-```
-
-The complete list of valid platform names can be viewed with the
-`vagrant status` command.
+Ultra-mega-uber-massive shoutout and thanks to Opscode for Omnibus.
