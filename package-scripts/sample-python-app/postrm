@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+# Perform necessary sample-python-app removal steps
+# after package is uninstalled.
+#
+
+echo "sample-python-app has been uninstalled!"
+
+exit 0

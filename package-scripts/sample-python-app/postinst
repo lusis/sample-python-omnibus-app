@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# Perform necessary sample-python-app setup steps
+# after package is installed.
+#
+
+PROGNAME=$(basename $0)
+DEST_DIR=/opt/sample-python-app
+function error_exit
+{
+  echo "${PROGNAME}: ${1:-"Unknown Error"}" 1>&2
+  exit 1
+}
+
+ln -sf $DEST_DIR/embedded/bin/python $DEST_DIR/bin/ || error_exit "Cannot link python"
+ln -sf $DEST_DIR/embedded/bin/python2.7 $DEST_DIR/bin/ || error_exit "Cannot link python"
+ln -sf $DEST_DIR/embedded/bin/pip $DEST_DIR/bin/ || error_exit "Cannot link python"
+ln -sf $DEST_DIR/embedded/bin/pip-2.7 $DEST_DIR/bin/ || error_exit "Cannot link python"
+ln -sf $DEST_DIR/embedded/bin/easy_install $DEST_DIR/bin/ || error_exit "Cannot link python"
+ln -sf $DEST_DIR/embedded/bin/easy_install-2.7 $DEST_DIR/bin/ || error_exit "Cannot link python"
+echo "Thank you for installing sample-python-app!"
+
+exit 0
