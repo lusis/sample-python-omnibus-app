@@ -18,6 +18,7 @@ ln -sf $DEST_DIR/embedded/bin/pip $DEST_DIR/bin/ || error_exit "Cannot link pyth
 ln -sf $DEST_DIR/embedded/bin/pip-2.7 $DEST_DIR/bin/ || error_exit "Cannot link python"
 ln -sf $DEST_DIR/embedded/bin/easy_install $DEST_DIR/bin/ || error_exit "Cannot link python"
 ln -sf $DEST_DIR/embedded/bin/easy_install-2.7 $DEST_DIR/bin/ || error_exit "Cannot link python"
+chown -R root:root $DEST_DIR || error_exit "Cannot chown files for some reason"
 echo "Thank you for installing sample-python-app!"
 
 exit 0
